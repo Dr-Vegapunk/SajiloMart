@@ -11,6 +11,10 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Separator } from "@/components/ui/separator"
+import axios from "axios"
+import toast from "react-hot-toast"
+import { useRouter } from 'next/navigation'
+
 
 // Validation schema
 const LoginSchema = Yup.object().shape({
@@ -24,6 +28,7 @@ const LoginSchema = Yup.object().shape({
 
 export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false)
+  const router = useRouter()
 
   const initialValues = {
     email: '',
@@ -31,13 +36,22 @@ export default function LoginPage() {
     rememberMe: false
   }
 
-  const handleSubmit = (values, { setSubmitting }) => {
-    // Handle login logic here
-    console.log(values)
-    setTimeout(() => {
-      setSubmitting(false)
-    }, 500)
+const handleSubmit = async (values, { setSubmitting }) => {
+  try {
+    setSubmitting(true);
+    const response = await axios.post('http://localhost:9000/login', values);
+    if (response.status === 200 || response.status === 201) {
+      toast.success(response.data?.message);
+      router.push('/');
+    } else {
+      toast.error(response.data?.message);
+    }
+  } catch (error) {
+    toast.error(error.response?.data?.message);
+  } finally {
+    setSubmitting(false);
   }
+}
 
   return (
     <div className="space-y-6">
