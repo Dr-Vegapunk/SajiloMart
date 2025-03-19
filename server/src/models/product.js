@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 // 📦 Product Schema
 const ProductSchema = new mongoose.Schema({
-    name: { type: String, required: true },
+    title: { type: String, required: true },
     description: String,
     price: { type: Number, required: true },
     stock: { type: Number, required: true },
@@ -12,3 +12,4 @@ const ProductSchema = new mongoose.Schema({
   }, { timestamps: true });
   
   const Product = mongoose.model("Product", ProductSchema);
+  module.exports = Product;
