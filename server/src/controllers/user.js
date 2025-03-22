@@ -65,12 +65,18 @@ exports.loginUser = async (req, res) => {
     );
 
     res.json({
-        data: user,
-
+      message: "User logged in successfully",
+      data: {
         token,
-        isLoggedIn: true,
-        message: "User logged in successfully",
-      });
+        user: {
+          id: existingUser._id,
+          name: existingUser.name,
+          email: existingUser.email,
+          address: existingUser.address,
+          phone: existingUser.phone,
+        },
+      },
+    });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server error" });

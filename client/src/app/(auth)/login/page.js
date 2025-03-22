@@ -14,6 +14,9 @@ import { Separator } from "@/components/ui/separator"
 import axios from "axios"
 import toast from "react-hot-toast"
 import { useRouter } from 'next/navigation'
+import { useDispatch } from 'react-redux'
+import { addUserDetail } from '@/lib/redux/user/userSlice.js'
+
 
 
 // Validation schema
@@ -29,6 +32,7 @@ const LoginSchema = Yup.object().shape({
 export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false)
   const router = useRouter()
+  const dispatch = useDispatch()
 
   const initialValues = {
     email: '',
@@ -41,7 +45,9 @@ const handleSubmit = async (values, { setSubmitting }) => {
     setSubmitting(true);
     const response = await axios.post('http://localhost:9000/login', values);
     if (response.status === 200 || response.status === 201) {
+      
       toast.success(response.data?.message);
+      dispatch(addUserDetail(response.data));
       router.push('/');
     } else {
       toast.error(response.data?.message);
