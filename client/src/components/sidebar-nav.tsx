@@ -69,7 +69,7 @@ export function SidebarNav() {
               </SidebarMenuItem>
               <SidebarMenuItem>
                 <SidebarMenuButton asChild>
-                  <Link href="#">
+                  <Link href="../admin/product">
                     <Package className="h-4 w-4" />
                     <span>Products</span>
                   </Link>
@@ -77,7 +77,7 @@ export function SidebarNav() {
               </SidebarMenuItem>
               <SidebarMenuItem>
                 <SidebarMenuButton asChild>
-                  <Link href="#">
+                  <Link href="../admin/category">
                     <Box className="h-4 w-4" />
                     <span>Categories</span>
                   </Link>
