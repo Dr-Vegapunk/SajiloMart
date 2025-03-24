@@ -1,4 +1,6 @@
 const express = require('express')
+require('dotenv').config()
+
 const dbConnect = require('./db/connection')
 const userRoutes = require('./routes/user')
 const productRoutes = require('./routes/product')
