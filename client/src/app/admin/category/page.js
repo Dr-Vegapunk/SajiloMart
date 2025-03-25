@@ -1,11 +1,13 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { CategoryDialog } from "@/components/category-dialog"
 import { Button } from "@/components/ui/button"
 import { Pencil, Trash2, Plus } from "lucide-react"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
+import axios from "axios"
+import { toast } from 'react-toastify'
 import {
   AlertDialog,
   AlertDialogAction,
@@ -23,51 +25,81 @@ export default function CategoryDashboard() {
   const [categoryToDelete, setCategoryToDelete] = useState(null)
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
 
-  const handleAddCategory = (values) => {
-    // In a real app, you would call your API here
-    const newCategory = {
-      ...values,
-      name: values.name.toLowerCase(), // Mimicking the mongoose pre-save hook
-      _id: Date.now().toString(),
-      createdAt: new Date(),
-      updatedAt: new Date(),
+  const fetchCategories = async () => {
+    try {
+      const response = await axios.get("http://localhost:9000/category");
+      console.log("Categories fetched:", response.data);
+      setCategories(response.data);
+    } catch (error) {
+      toast.error("Error fetching categories:", error);
     }
+  };
 
-    setCategories([...categories, newCategory])
-    console.log("Category added:", newCategory)
-    return Promise.resolve(newCategory)
-  }
+  useEffect(() => {
+    fetchCategories();
+  }, []);
 
-  const handleEditCategory = (values) => {
-    // In a real app, you would call your API here
-    const updatedCategories = categories.map((cat) => {
-      if (cat._id === categoryToEdit._id) {
-        return {
-          ...cat,
-          name: values.name.toLowerCase(),
-          updatedAt: new Date(),
+  const handleAddCategory = async (values) => {
+    try {
+      const response = await axios.post("http://localhost:9000/category", values);
+      const newCategory = {
+        ...response.data,
+        name: values.name.trim().toLowerCase(),
+        _id: Date.now().toString(),
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      };
+
+      setCategories((prevCategories) => [...prevCategories, newCategory]);
+      toast.success("Category added:", newCategory);
+      return Promise.resolve(newCategory);
+    } catch (error) {
+      toast.error("Error adding category:", error);
+      return Promise.reject(error);
+    }
+  };
+
+  const handleEditCategory = async (values) => {
+    try {
+      const response = await axios.put(`http://localhost:9000/category/${categoryToEdit._id}`, values);
+      const updatedCategories = categories.map((cat) => {
+        if (cat._id === categoryToEdit._id) {
+          return {
+            ...cat,
+            name: values.name.trim().toLowerCase(),
+            updatedAt: new Date(),
+          };
         }
-      }
-      return cat
-    })
+        return cat;
+      });
 
-    setCategories(updatedCategories)
-    setCategoryToEdit(null)
-    console.log("Category updated:", values)
-    return Promise.resolve(values)
-  }
+      setCategories(updatedCategories);
+      setCategoryToEdit(null);
+      toast.success("Category updated:", response?.data?.message);
+      return Promise.resolve(values);
+    } catch (error) {
+      toast.error("Error updating category:", error);
+      return Promise.reject(error);
+    }
+  };
 
-  const handleDeleteCategory = () => {
-    if (!categoryToDelete) return
+  const handleDeleteCategory = async () => {
+    if (!categoryToDelete) return;
 
-    // In a real app, you would call your API here
-    const filteredCategories = categories.filter((cat) => cat._id !== categoryToDelete._id)
+    try {
+      const response = await axios.delete(`http://localhost:9000/category/${categoryToDelete._id}`);
 
-    setCategories(filteredCategories)
-    setCategoryToDelete(null)
-    setDeleteDialogOpen(false)
-    console.log("Category deleted:", categoryToDelete)
-  }
+      const filteredCategories = categories.filter((cat) => cat._id !== categoryToDelete._id);
+
+      setCategories(filteredCategories);
+      setCategoryToDelete(null);
+      setDeleteDialogOpen(false);
+      toast.success(response?.data?.message);
+      console.log("Category deleted:", categoryToDelete);
+    } catch (error) {
+      toast.error("Error deleting category:", error);
+    }
+  };
 
   const openEditDialog = (category) => {
     setCategoryToEdit(category)
@@ -117,12 +149,12 @@ export default function CategoryDashboard() {
                     <TableHead className="text-right">Actions</TableHead>
                   </TableRow>
                 </TableHeader>
-                <TableBody>
+                <TableBody >
                   {categories.map((category) => (
-                    <TableRow key={category._id}>
-                      <TableCell className="font-medium">{category.name}</TableCell>
-                      <TableCell>{formatDate(category.createdAt)}</TableCell>
-                      <TableCell>{formatDate(category.updatedAt)}</TableCell>
+                    <TableRow key={category?._id}>
+                      <TableCell className="font-medium">{category?.name}</TableCell>
+                      <TableCell>{formatDate(category?.createdAt)}</TableCell>
+                      <TableCell>{formatDate(category?.updatedAt)}</TableCell>
                       <TableCell className="text-right">
                         <div className="flex justify-end gap-2">
                           <Button variant="outline" size="icon" onClick={() => openEditDialog(category)}>
@@ -183,4 +215,3 @@ export default function CategoryDashboard() {
     </div>
   )
 }
-
