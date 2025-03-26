@@ -29,7 +29,7 @@ export default function CategoryDashboard() {
     try {
       const response = await axios.get("http://localhost:9000/category");
       console.log("Categories fetched:", response.data);
-      setCategories(response.data);
+      setCategories(response?.data?.data);
     } catch (error) {
       toast.error("Error fetching categories:", error);
     }

@@ -1,4 +1,5 @@
 
+const Category = require("../models/category");
 const Product = require("../models/product");
 
 exports.createProduct = async (req, res) => {
@@ -8,12 +9,17 @@ exports.createProduct = async (req, res) => {
     if (!title || !price || !description || !category || !stock || !images) {
       return res.status(400).json({ message: "Please provide all required fields" });
     }
+    // Find the category by name
+    const foundCategory = await Category.findOne({ name: category });
 
+    if (!foundCategory) {
+        return res.status(400).json({ message: "Category not found" });
+    }
     const newProduct = new Product({
       title,
       price,
       stock,
-      category,
+      category: foundCategory._id,
       description,
       images,        // ✅ Now correctly extracted as an array
       ratings: ratings || [], // ✅ Default to empty array if not provided
@@ -22,7 +28,7 @@ exports.createProduct = async (req, res) => {
 
     await newProduct.save();
 
-    res.status(201).json({ message: "Product created successfully", data: newProduct });
+    res.status(201||200).json({ message: "Product created successfully", data: newProduct });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server error" });
