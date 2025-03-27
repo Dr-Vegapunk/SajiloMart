@@ -25,7 +25,7 @@ interface Product {
   description: string
   price: number
   stock: number
-  category: string // This will store the category ID
+  category: Category // This will store the category ID
   images: string[]
   averageRating: number
 }
@@ -41,7 +41,7 @@ interface ProductFormData {
   description: string
   price: string
   stock: string
-  category: string
+  category: string //category ID reference to the category model
   images: string[]
 }
 
@@ -164,14 +164,12 @@ export default function ProductAdmin() {
   }
 
   const filteredProducts = selectedCategories.length
-    ? products.filter((product) => selectedCategories.includes(product.category))
-    : products
-
-  // Add a helper function to get category name from ID
-  const getCategoryName = (categoryId: string) => {
-    const category = categories.find((cat) => cat.id === categoryId)
-    return category ? category.name : "Unknown"
-  }
+  ? products.filter((product) =>
+      selectedCategories.includes(product?.category?.name)
+    )
+  : products;
+  
+ 
 
   // Prepare form data for editing
   const getEditFormData = (): ProductFormData | undefined => {
@@ -240,7 +238,7 @@ export default function ProductAdmin() {
                   <TableHead className="text-right">Actions</TableHead>
                 </TableRow>
               </TableHeader>
-              <TableBody>
+              <TableBody >
                 {filteredProducts.length === 0 ? (
                   <TableRow>
                     <TableCell colSpan={7} className="text-center">
@@ -254,7 +252,7 @@ export default function ProductAdmin() {
                       <TableCell>{product.description}</TableCell>
                       <TableCell>${product.price.toFixed(2)}</TableCell>
                       <TableCell>{product.stock}</TableCell>
-                      <TableCell>{getCategoryName(product.category)}</TableCell>
+                      <TableCell>{product.category ? product.category.name : "Unknown"}</TableCell>
                       <TableCell>{product.averageRating.toFixed(1)}</TableCell>
                       <TableCell className="text-right">
                         <Button variant="ghost" size="icon" onClick={() => openEditDialog(product)}>
