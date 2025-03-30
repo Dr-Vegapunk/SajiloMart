@@ -38,7 +38,8 @@ exports.createProduct = async (req, res) => {
 // 📦 Get all products
 exports.getProduct = async (req, res) => {
   try {
-    const products = await Product.find();
+    const products = await Product.find().populate("category"); // ✅ Populate the category field
+  
     res.json(products);
   } catch (error) {
     console.error(error);
@@ -48,7 +49,7 @@ exports.getProduct = async (req, res) => {
 // 📦 Get a product by id
 exports.getProductById = async (req, res) => {
   try {
-    const product = await Product.findById(req.params.id);
+    const product = await Product.findById(req.params.id).populate("category"); // ✅ Populate the category field
     res.json(product);
   } catch (error) {
     console.error(error);
@@ -74,7 +75,7 @@ exports.updateProduct = async (req, res) => {
       ...(ratings && { ratings }),
     };
 
-    const product = await Product.findByIdAndUpdate(req.params.id, updatedProduct, { new: true });
+    const product = await Product.findByIdAndUpdate(req.params.id, updatedProduct, { new: true }).populate("category"); // ✅ Populate the category field
 
     if (!product) {
       return res.status(404).json({ message: "Product not found" });

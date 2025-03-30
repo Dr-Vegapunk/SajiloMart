@@ -37,7 +37,7 @@ export function SidebarNav() {
             <SidebarMenu>
               <SidebarMenuItem>
                 <SidebarMenuButton asChild isActive={pathname === "/"}>
-                  <Link href="/">
+                  <Link href="../admin/dashboard">
                     <LayoutDashboard className="h-4 w-4" />
                     <span>Dashboard</span>
                   </Link>
@@ -85,7 +85,7 @@ export function SidebarNav() {
               </SidebarMenuItem>
               <SidebarMenuItem>
                 <SidebarMenuButton asChild>
-                  <Link href="#">
+                  <Link href="../admin/customer">
                     <Users className="h-4 w-4" />
                     <span>Customers</span>
                   </Link>

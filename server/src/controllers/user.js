@@ -82,3 +82,49 @@ exports.loginUser = async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 };
+exports.getAllUsers = async (req, res) => {
+  try {
+    const users = await user.find();
+    res.json(users);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+}
+exports.deleteUser = async (req, res) => {
+  try {
+    await user.findByIdAndDelete(req.params.id);
+    res.json({ message: "User deleted successfully" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+}
+exports.updateUser = async (req, res) => {
+  try {
+    const { name, email, password, address, phone } = req.body;
+
+    if (!name && !email && !password && !address && !phone) {
+      return res.status(400).json({ message: "At least one field is required for update" });
+    }
+
+    const updatedUser = {
+      ...(name && { name }),
+      ...(email && { email }),
+      ...(password && { password: await bcrypt.hash(password, 10) }), // Hash the new password
+      ...(address && { address }),
+      ...(phone && { phone }),
+    };
+
+    const user = await user.findByIdAndUpdate(req.params.id, updatedUser, { new: true });
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.json({ message: "User updated successfully", data: user });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+}

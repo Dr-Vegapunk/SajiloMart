@@ -8,7 +8,13 @@ const categoryRoutes = require('./routes/category')
 const app = express()
 const cors = require('cors')
 const port = 9000
-app.use(cors());
+app.use(cors())
+  // cors({
+  //   origin: "http://localhost:3000/",
+  //   methods: ["POST", "GET", "DELETE", "PATCH", "PUT"],
+  //   credentials: true,
+  // })
+// );
 app.use(express.json());
 dbConnect();
 

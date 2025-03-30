@@ -2,6 +2,7 @@ import { combineReducers, configureStore } from '@reduxjs/toolkit'
 import { persistStore, persistReducer, FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import { userSlice } from './user/userSlice'
+import logger from 'redux-logger'
 
 const persistConfig = {
     key: "root",
@@ -20,7 +21,7 @@ export const store = configureStore({
           ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
         },
        
-      }),
+      }).concat(logger),
   })
 
   

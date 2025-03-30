@@ -1,6 +1,6 @@
 "use client"
 
-import { AdminLayout } from "@/components/admin-layout"
+// import { AdminLayout } from "@/components/admin-layout"
 import { DashboardCards } from "@/components/dashboard-cards"
 import { RecentOrders } from "@/components/recent-orders"
 import { RevenueChart } from "@/components/revenue-chart"
@@ -8,7 +8,7 @@ import { TopProducts } from "@/components/top-products"
 
 export function DashboardPage() {
   return (
-    <AdminLayout>
+    // <AdminLayout>
       <div className="flex flex-col gap-5">
         <h1 className="text-2xl font-bold tracking-tight">Dashboard</h1>
         <DashboardCards />
@@ -18,7 +18,7 @@ export function DashboardPage() {
         </div>
         <RecentOrders />
       </div>
-    </AdminLayout>
+    // </AdminLayout>
   )
 }
 
