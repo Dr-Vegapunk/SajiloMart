@@ -51,7 +51,7 @@ export function RevenueChart() {
       <CardContent>
         <div className="h-[300px]">
           <img
-            src="/placeholder.svg?height=300&width=600"
+            src="/placeholder.jpg?height=300&width=600"
             alt="Revenue Chart"
             className="h-full w-full object-cover rounded-md"
           />

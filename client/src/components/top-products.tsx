@@ -16,7 +16,7 @@ export function TopProducts() {
             <div key={product.id} className="flex items-center">
               <div className="mr-4 h-12 w-12 overflow-hidden rounded-md">
                 <img
-                  src={product.image || "/placeholder.svg"}
+                  src={product.image || "/placeholder.jpg"}
                   alt={product.name}
                   className="h-full w-full object-cover"
                 />
@@ -46,28 +46,28 @@ const topProducts = [
     name: "Wireless Earbuds",
     category: "Electronics",
     price: "89.99",
-    image: "/placeholder.svg?height=48&width=48",
+    image: "/placeholder.jpg?height=48&width=48",
   },
   {
     id: "2",
     name: "Smart Watch",
     category: "Electronics",
     price: "199.99",
-    image: "/placeholder.svg?height=48&width=48",
+    image: "/placeholder.jpg?height=48&width=48",
   },
   {
     id: "3",
     name: "Running Shoes",
     category: "Footwear",
     price: "129.99",
-    image: "/placeholder.svg?height=48&width=48",
+    image: "/placeholder.jpg?height=48&width=48",
   },
   {
     id: "4",
     name: "Backpack",
     category: "Accessories",
     price: "59.99",
-    image: "/placeholder.svg?height=48&width=48",
+    image: "/placeholder.jpg?height=48&width=48",
   },
 ]
 
