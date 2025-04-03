@@ -11,7 +11,7 @@ export function FeaturedProducts() {
       id: 1,
       title: "Wireless Headphones",
       price: 129.99,
-      image: "/placeholder.jpg?height=400&width=400",
+      image: "/placeholder.svg?height=400&width=400",
       rating: 4.5,
       category: "Electronics",
     },
@@ -19,7 +19,7 @@ export function FeaturedProducts() {
       id: 2,
       title: "Smart Watch",
       price: 199.99,
-      image: "/placeholder.jpg?height=400&width=400",
+      image: "/placeholder.svg?height=400&width=400",
       rating: 4.8,
       category: "Electronics",
     },
@@ -27,7 +27,7 @@ export function FeaturedProducts() {
       id: 3,
       title: "Casual T-Shirt",
       price: 24.99,
-      image: "/placeholder.jpg?height=400&width=400",
+      image: "/placeholder.svg?height=400&width=400",
       rating: 4.2,
       category: "Fashion",
     },
@@ -35,7 +35,7 @@ export function FeaturedProducts() {
       id: 4,
       title: "Coffee Maker",
       price: 89.99,
-      image: "/placeholder.jpg?height=400&width=400",
+      image: "/placeholder.svg?height=400&width=400",
       rating: 4.7,
       category: "Home & Kitchen",
     },
@@ -58,7 +58,7 @@ export function FeaturedProducts() {
               <Link href={`/products/${product.id}`}>
                 <div className="relative aspect-square overflow-hidden">
                   <Image
-                    src={product.image || "/placeholder.jpg"}
+                    src={product.image || "/placeholder.svg"}
                     alt={product.title}
                     fill
                     className="object-cover transition-transform hover:scale-105"
@@ -90,9 +90,11 @@ export function FeaturedProducts() {
           ))}
         </div>
         <div className="flex justify-center mt-8">
-          <Button variant="outline" size="lg">
-            View All Products
-          </Button>
+          <Link href="/products">
+            <Button variant="outline" size="lg">
+              View All Products
+            </Button>
+          </Link>
         </div>
       </div>
     </section>
